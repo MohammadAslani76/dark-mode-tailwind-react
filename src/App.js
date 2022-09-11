@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState,useEffect} from "react";
+import Navbar from "./components/Navbar";
+import Main from "./components/Main";
 
 function App() {
+    const getMode = () => {
+        const initialMode = localStorage.getItem("mode");
+        if (initialMode !== null){
+            if (window.matchMedia("(prefers-color-scheme :dark)").matches) {
+                return true;
+            } else {
+                return false;
+            }
+        }else {
+            return JSON.stringify(localStorage.getItem("mode"));
+        }
+    }
+    const [dark,setDark] = useState(getMode())
+    useEffect(() => {
+        localStorage.setItem("mode",JSON.stringify(dark))
+        console.log(JSON.stringify(localStorage.getItem("mode")))
+    },[dark])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={dark ? "dark" : null}>
+        <div className="min-h-screen dark:bg-sky-900">
+            <Navbar dark={dark} setDark={setDark}/>
+            <Main dark={dark}/>
+        </div>
     </div>
   );
 }
