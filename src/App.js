@@ -5,20 +5,19 @@ import Main from "./components/Main";
 function App() {
     const getMode = () => {
         const initialMode = localStorage.getItem("mode");
-        if (initialMode !== null){
+        if (initialMode === null){
             if (window.matchMedia("(prefers-color-scheme :dark)").matches) {
                 return true;
             } else {
                 return false;
             }
         }else {
-            return JSON.stringify(localStorage.getItem("mode"));
+            return JSON.parse(localStorage.getItem("mode"));
         }
     }
     const [dark,setDark] = useState(getMode())
     useEffect(() => {
         localStorage.setItem("mode",JSON.stringify(dark))
-        console.log(JSON.stringify(localStorage.getItem("mode")))
     },[dark])
 
   return (
